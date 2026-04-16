@@ -1,0 +1,446 @@
+
+<style>
+  :root {
+    --teal: #127676;
+    --orange: #E4632E;
+    --jaune: #E3A535;
+    --ink: #0D1617;
+    --paper: #F2EFE6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--ink); padding: 14px; font-family: -apple-system, 'Segoe UI', sans-serif; }
+  .page-frame {
+    background: var(--paper);
+    border: 4px solid var(--orange);
+    border-radius: 32px 8px 24px 12px;
+    min-height: calc(100vh - 28px);
+    padding: 32px 28px;
+    position: relative;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    border-bottom: 3px solid var(--teal);
+    padding-bottom: 18px;
+    position: relative;
+  }
+  .header::after {
+    content: "❧";
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--paper);
+    padding: 0 10px;
+    color: var(--teal);
+    font-size: 18px;
+  }
+  .header h1 {
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .header p {
+    font-size: 13px;
+    color: var(--teal);
+    margin-top: 4px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+    justify-content: center;
+  }
+  .nav-btn {
+    background: transparent;
+    border: 2px solid var(--teal);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--teal);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { background: var(--teal); color: var(--paper); }
+  .nav-btn.active { background: var(--teal); color: var(--paper); }
+  .fiche { display: none; }
+  .fiche.active { display: block; }
+  .fiche-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .num {
+    background: var(--orange);
+    color: var(--paper);
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .fiche-titre h2 {
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .fiche-titre p {
+    font-size: 13px;
+    color: var(--teal);
+    margin-top: 3px;
+    font-style: italic;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .tag-teal { background: rgba(18,118,118,0.12); color: var(--teal); border: 1.5px solid var(--teal); }
+  .tag-orange { background: rgba(228,99,46,0.1); color: var(--orange); border: 1.5px solid var(--orange); }
+  .tag-jaune { background: rgba(227,165,53,0.15); color: #8B6000; border: 1.5px solid var(--jaune); }
+  .section-label {
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+  .card {
+    background: white;
+    border: 3px solid var(--teal);
+    border-radius: 24px 8px 24px 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: inset 3px 0 0 var(--orange);
+  }
+  .card p, .card li {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .card ul { padding-left: 16px; }
+  .card li { margin-bottom: 4px; }
+  .steps { counter-reset: step; }
+  .step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: var(--teal);
+    color: var(--paper);
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 13px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step p { font-size: 14px; line-height: 1.6; color: var(--ink); }
+  .step strong { color: var(--teal); }
+  .variante-card {
+    background: rgba(227,165,53,0.08);
+    border: 2px solid var(--jaune);
+    border-radius: 12px 4px 12px 4px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  .variante-card strong { font-size: 13px; color: #8B6000; display: block; margin-bottom: 2px; letter-spacing: 0.04em; }
+  .variante-card p { font-size: 13px; color: var(--ink); line-height: 1.55; }
+  .alerte {
+    background: rgba(228,99,46,0.08);
+    border-left: 4px solid var(--orange);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  .alerte strong { color: var(--orange); }
+  .sep { text-align: center; color: var(--teal); margin: 6px 0; font-size: 16px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+  .mini-card {
+    background: white;
+    border: 2px solid var(--teal);
+    border-radius: 12px 4px 12px 4px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .mini-card strong { color: var(--teal); display: block; margin-bottom: 3px; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .nav-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    border-top: 2px solid var(--teal);
+    padding-top: 14px;
+  }
+  .nav-arrow {
+    background: transparent;
+    border: 2px solid var(--teal);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--teal);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .nav-arrow:hover { background: var(--teal); color: var(--paper); }
+  .nav-arrow:disabled { opacity: 0.3; cursor: default; }
+  .progress {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(18,118,118,0.25);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .dot.active { background: var(--orange); }
+</style>
+
+<div class="page-frame">
+  <div class="header">
+    <h1>Débat Argumentatif</h1>
+    <p>6 formes d'organisation · Fiches pédagogiques</p>
+  </div>
+
+  <div class="nav" id="nav"></div>
+
+  <div id="fiches"></div>
+
+  <div class="nav-bottom">
+    <button class="nav-arrow" id="prev" onclick="navigate(-1)">← Préc.</button>
+    <div class="progress" id="dots"></div>
+    <button class="nav-arrow" id="next" onclick="navigate(1)">Suiv. →</button>
+  </div>
+</div>
+
+<script>
+const fiches = [
+  {
+    num: "01",
+    titre: "Fishbowl",
+    sous: "Le poisson rouge",
+    tags: [{t:"12–30 élèves",c:"teal"},{t:"écoute active",c:"teal"},{t:"oral moyen",c:"jaune"},{t:"45–60 min",c:"orange"}],
+    objectif: "Séparer les rôles de locuteur et d'observateur pour développer l'écoute active et réduire la pression orale sur les élèves moins à l'aise.",
+    mise_en_oeuvre: [
+      {t:"Disposition", d:"2 cercles concentriques. 4 à 6 chaises au centre (cercle intérieur), le reste de la classe autour."},
+      {t:"Consigne observateurs", d:"Chaque observateur reçoit une grille : <em>«&nbsp;Qui prend la parole ? Qui argumente ? Qui répond à qui ? Qui coupe ?»</em>"},
+      {t:"Durée par round", d:"10 à 15 min de débat, puis rotation d'au moins 2 élèves du cercle intérieur vers l'extérieur."},
+      {t:"Debriefing", d:"5 min : les observateurs restituent ce qu'ils ont noté avant la rotation suivante."},
+      {t:"Clôture", d:"Synthèse collective. L'enseignant·e pointe les arguments clés restés sans réponse."}
+    ],
+    variantes: [
+      {t:"Chaise vide", d:"Une chaise libre au centre : n'importe quel observateur peut s'asseoir pour intervenir, puis retourner à sa place."},
+      {t:"Fishbowl muet", d:"Les observateurs ne parlent pas mais envoient des cartes écrites aux débatteurs (contre-argument, question, validation)."},
+      {t:"Rôles assignés", d:"Chaque élève du cercle intérieur reçoit un rôle : défenseur, contradicteur, médiateur, porte-parole."}
+    ],
+    alerte: "<strong>Piège fréquent :</strong> le cercle intérieur tourne en monologue si personne ne relance. Prévoir une question de relance toutes les 5 min inscrite au tableau."
+  },
+  {
+    num: "02",
+    titre: "Débat Mouvant",
+    sous: "Le 4 coins / débat actif",
+    tags: [{t:"Toute la classe",c:"teal"},{t:"oral faible requis",c:"teal"},{t:"engagement physique",c:"jaune"},{t:"20–40 min",c:"orange"}],
+    objectif: "Engager physiquement les élèves dans la prise de position et rendre visible l'évolution des opinions sous l'effet des arguments.",
+    mise_en_oeuvre: [
+      {t:"Affirmation tranchée", d:"Projeter une phrase clivante et univoque : <em>«&nbsp;Les réseaux sociaux font plus de mal que de bien.»</em>"},
+      {t:"Positionnement", d:"Les élèves se placent dans l'espace : <strong>accord / désaccord / nuancé</strong> (ou 4 coins : tout à fait / plutôt / plutôt pas / pas du tout)."},
+      {t:"Tour de parole", d:"L'enseignant·e choisit un élève de chaque pôle : il justifie sa position en 2 phrases max."},
+      {t:"Déplacement autorisé", d:"Après chaque argument, tout élève convaincu peut changer de place. Il doit dire pourquoi."},
+      {t:"Clôture", d:"Photographier la disposition finale. Comparer avec le début. Débriefing sur les arguments décisifs."}
+    ],
+    variantes: [
+      {t:"Spectre gradué", d:"Remplacer les zones par une ligne au sol (corde ou scotch) : les élèves se positionnent sur un continuum, pas dans des pôles."},
+      {t:"Question par question", d:"Changer d'affirmation toutes les 10 min pour couvrir plusieurs aspects d'un sujet."},
+      {t:"Sans parole", d:"Phase silencieuse : chacun se place uniquement d'après ce qu'il voit des positions des autres, puis justification."}
+    ],
+    alerte: "<strong>Limite :</strong> tendance au mimétisme social (suivre les amis, pas les arguments). Contrer en demandant une justification écrite avant le premier déplacement."
+  },
+  {
+    num: "03",
+    titre: "Équipes Structurées",
+    sous: "Format parlementaire simplifié",
+    tags: [{t:"10–30 élèves",c:"teal"},{t:"oral élevé",c:"orange"},{t:"décentration cognitive",c:"teal"},{t:"60–90 min",c:"orange"}],
+    objectif: "Forcer la défense d'une position assignée (pas forcément la sienne) pour développer la décentration et la maîtrise de l'argumentation formelle.",
+    mise_en_oeuvre: [
+      {t:"Question + camps", d:"Formuler une question binaire. Assigner les camps par tirage au sort — c'est l'enjeu pédagogique clé."},
+      {t:"Préparation", d:"15 à 20 min en équipe pour lister 3 à 5 arguments + 2 contre-arguments prévisibles de l'adversaire."},
+      {t:"Tour 1 — Exposé", d:"Chaque équipe présente sa thèse : 3 min. Pas d'interruption."},
+      {t:"Tour 2 — Réfutation", d:"Chaque équipe répond aux arguments adverses : 2 min."},
+      {t:"Tour 3 — Conclusion", d:"Synthèse de chaque camp : 1 min. Puis vote de la classe : quel camp a été le plus convaincant ?"}
+    ],
+    variantes: [
+      {t:"3 équipes", d:"Ajouter une équipe «&nbsp;jury&nbsp;» qui évalue selon une grille (qualité des preuves, clarté, réfutation)."},
+      {t:"Rotation des camps", d:"Après le débat, inverser les camps et recommencer sur la même question. Bilan : qu'est-ce qui a changé ?"},
+      {t:"Format écrit d'abord", d:"Chaque élève rédige 1 argument pour son camp avant la phase orale. Évite le silence et répartit la charge."}
+    ],
+    alerte: "<strong>Résistance fréquente :</strong> «&nbsp;Mais c'est pas ce que je pense !&nbsp;» — expliquer avant que c'est exactement le but : comprendre un raisonnement ne signifie pas l'adopter."
+  },
+  {
+    num: "04",
+    titre: "Table Ronde par Rôles",
+    sous: "Rôles argumentatifs assignés",
+    tags: [{t:"6–15 élèves",c:"teal"},{t:"oral moyen",c:"jaune"},{t:"diversité de perspectives",c:"teal"},{t:"45–60 min",c:"orange"}],
+    objectif: "Diversifier les postures argumentatives en évitant que chaque élève parle uniquement depuis sa zone de confort idéologique.",
+    mise_en_oeuvre: [
+      {t:"Distribution des rôles", d:"Chaque élève reçoit une carte rôle (voir ci-dessous). Idéalement contre ses tendances habituelles."},
+      {t:"Temps de préparation", d:"5 min pour noter 2 interventions possibles depuis son rôle."},
+      {t:"Débat en cercle", d:"L'enseignant·e lance avec une question ouverte. Les élèves interviennent depuis leur rôle — pas leur opinion réelle."},
+      {t:"Mi-temps meta", d:"À mi-parcours, pause de 3 min : chacun dit ce qui lui a été difficile dans son rôle."},
+      {t:"Débrief", d:"Sortir des rôles. Chaque élève dit quelle est <em>sa</em> position réelle, et si le débat l'a modifiée."}
+    ],
+    variantes: [
+      {t:"Cartes rôles standard", d:"<em>L'avocat du diable · Le médiateur · L'expert · Le pragmatique · Le contradicteur systématique · Le défenseur du consensus · Le citoyen lambda · Le lanceur d'alerte</em>"},
+      {t:"Rôles thématiques", d:"Adapter les rôles au sujet : pour l'IA Act → le programmeur, le législateur, le citoyen, l'entreprise, l'éthicien."},
+      {t:"Rotation des rôles", d:"Toutes les 15 min, chaque élève passe au rôle suivant sur la carte. Découverte de plusieurs postures en une séance."}
+    ],
+    alerte: "<strong>Piège :</strong> les rôles restent superficiels si les élèves ne reçoivent pas de fiche d'aide avec des formulations type. Préparer 2 à 3 amorces par rôle."
+  },
+  {
+    num: "05",
+    titre: "Débat Écrit en Réseau",
+    sous: "Argumentation asynchrone / murale",
+    tags: [{t:"Toute la classe",c:"teal"},{t:"oral nul",c:"teal"},{t:"trace écrite",c:"teal"},{t:"30–45 min",c:"orange"}],
+    objectif: "Offrir aux élèves qui pensent mieux par écrit ou par la réflexion différée un espace d'argumentation équitable, producteur de traces analysables.",
+    mise_en_oeuvre: [
+      {t:"Affichage des thèses", d:"Chaque élève rédige sa position en 3 lignes sur une grande feuille ou un post-it A5, puis l'affiche au mur."},
+      {t:"Phase d'annotation", d:"En silence, chacun circule et colle des post-its de 3 couleurs : <span style='color:#127676'>■ vert = accord + argument</span> / <span style='color:#E4632E'>■ orange = contre-argument</span> / <span style='color:#8B6000'>■ jaune = question</span>."},
+      {t:"Lecture commentée", d:"L'enseignant·e sélectionne 3 à 4 thèses très annotées. Lecture à voix haute + commentaire collectif oral."},
+      {t:"Réponse écrite", d:"Chaque auteur dispose de 5 min pour répondre par écrit aux annotations reçues."},
+      {t:"Synthèse", d:"Identifier ensemble : quels arguments ont été les plus repris ? Lesquels n'ont pas eu de réponse ?"}
+    ],
+    variantes: [
+      {t:"Version numérique", d:"Remplacer le mur par un Padlet, Miro, ou Google Jamboard. Avantage : traçabilité, partage, export."},
+      {t:"Chaîne argumentative", d:"Chaque annotation doit elle-même pouvoir être annotée. On obtient des arbres d'arguments — visualisables."},
+      {t:"Débat en différé", d:"Les thèses sont affichées le lundi, les annotations le mercredi, les réponses le vendredi. Sur 1 semaine."}
+    ],
+    alerte: "<strong>Limite :</strong> sans cadre, les annotations restent superficielles (<em>«&nbsp;je suis d'accord&nbsp;»</em>). Exiger systématiquement : 1 annotation = 1 argument ou 1 exemple."
+  },
+  {
+    num: "06",
+    titre: "Débat en Cascade",
+    sous: "Pyramide / structure progressive",
+    tags: [{t:"12–30 élèves",c:"teal"},{t:"oral faible → moyen",c:"jaune"},{t:"coopération",c:"teal"},{t:"60–90 min",c:"orange"}],
+    objectif: "Structurer la montée en complexité argumentative par négociations successives, en réduisant la cacophonie de la plénière directe.",
+    mise_en_oeuvre: [
+      {t:"Niveau 1 — Binômes", d:"Chaque élève formule sa position. Les binômes débattent 8 min et doivent produire une <strong>thèse commune</strong> (ou constater leur désaccord et l'argumenter)."},
+      {t:"Niveau 2 — Quatuors", d:"Deux binômes fusionnent. Ils confrontent leurs thèses communes : 10 min pour produire une nouvelle position partagée."},
+      {t:"Niveau 3 — Groupes de 8", d:"Même logique. 12 min. La complexité monte : plus de positions à négocier."},
+      {t:"Plénière", d:"Chaque groupe de 8 présente sa thèse finale (2 min). Débat ouvert sur les divergences restantes entre groupes."},
+      {t:"Clôture méta", d:"Questions : qu'est-ce qui a changé entre votre position de départ et la thèse finale ? Qu'est-ce qui a résisté ?"}
+    ],
+    variantes: [
+      {t:"Cascade inversée", d:"Commencer par la plénière pour cartographier les positions, puis descendre en sous-groupes pour approfondir un point précis."},
+      {t:"Cascade avec vote", d:"À chaque niveau, voter sur la thèse à défendre à l'étape suivante. Introduit une dimension démocratique."},
+      {t:"Cascade asynchrone", d:"Chaque niveau se fait en classe différente. La thèse du niveau 1 est envoyée par écrit au niveau 2 le lendemain."}
+    ],
+    alerte: "<strong>Risque :</strong> les thèses communes deviennent des compromis mous («&nbsp;ça dépend du contexte&nbsp;»). Imposer une règle : la thèse commune doit prendre position — les nuances sont bienvenues mais il faut un verbe d'action."
+  }
+];
+
+let current = 0;
+
+function renderNav() {
+  const nav = document.getElementById('nav');
+  nav.innerHTML = fiches.map((f,i) => 
+    `<button class="nav-btn ${i===0?'active':''}" onclick="goTo(${i})">${f.num} · ${f.titre}</button>`
+  ).join('');
+}
+
+function renderFiches() {
+  const container = document.getElementById('fiches');
+  container.innerHTML = fiches.map((f,i) => `
+    <div class="fiche ${i===0?'active':''}" id="fiche-${i}">
+      <div class="fiche-header">
+        <div class="num">${f.num}</div>
+        <div class="fiche-titre">
+          <h2>${f.titre}</h2>
+          <p>${f.sous}</p>
+        </div>
+      </div>
+      <div class="tags">${f.tags.map(tg=>`<span class="tag tag-${tg.c}">${tg.t}</span>`).join('')}</div>
+      <div class="section-label">Objectif</div>
+      <div class="card"><p>${f.objectif}</p></div>
+      <div class="section-label">Mise en œuvre</div>
+      <div class="steps">${f.mise_en_oeuvre.map((s,j)=>`
+        <div class="step">
+          <div class="step-num">${j+1}</div>
+          <p><strong>${s.t}</strong> — ${s.d}</p>
+        </div>
+      `).join('')}</div>
+      <div class="section-label">Variantes</div>
+      ${f.variantes.map(v=>`<div class="variante-card"><strong>${v.t}</strong><p>${v.d}</p></div>`).join('')}
+      <div class="alerte">${f.alerte}</div>
+    </div>
+  `).join('');
+}
+
+function renderDots() {
+  const dots = document.getElementById('dots');
+  dots.innerHTML = fiches.map((_,i)=>`<div class="dot ${i===current?'active':''}" onclick="goTo(${i})"></div>`).join('');
+}
+
+function goTo(idx) {
+  document.getElementById(`fiche-${current}`).classList.remove('active');
+  document.querySelectorAll('.nav-btn')[current].classList.remove('active');
+  current = idx;
+  document.getElementById(`fiche-${current}`).classList.add('active');
+  document.querySelectorAll('.nav-btn')[current].classList.add('active');
+  document.getElementById('prev').disabled = current === 0;
+  document.getElementById('next').disabled = current === fiches.length - 1;
+  renderDots();
+}
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next >= 0 && next < fiches.length) goTo(next);
+}
+
+renderNav();
+renderFiches();
+renderDots();
+document.getElementById('prev').disabled = true;
+</script>
